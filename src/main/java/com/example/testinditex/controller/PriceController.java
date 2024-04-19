@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.Instant;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/v1/price")
@@ -20,18 +18,18 @@ public class PriceController {
     private PriceServiceImpl priceService;
 
     /**
-     * Metodo que recupera los Price en funcion de los campos fecha, id de producto e id de cadena
+     * Metodo que recupera Price en funcion de los campos fecha, id de producto e id de cadena
      * @param date
      * @param brandId
      * @param productId
-     * @return ResponseEntity<List<Price>>
+     * @return ResponseEntity<PriceResponseDTO>
      */
     @GetMapping
-    public ResponseEntity<List<PriceResponseDTO>> getPrice(
-            @RequestParam(value = "date") Instant date,
+    public ResponseEntity<PriceResponseDTO> getPrice(
+            @RequestParam(value = "date") LocalDateTime date,
             @RequestParam(value = "brandId") Integer brandId,
             @RequestParam(value = "productId") Integer productId){
-        List<PriceResponseDTO> prices = priceService.getPriceByDate(date, brandId, productId);
-        return new ResponseEntity<>(prices, HttpStatus.OK);
+        PriceResponseDTO price = priceService.getPriceByDate(date, brandId, productId);
+        return new ResponseEntity<>(price, HttpStatus.OK);
     }
 }

@@ -15,23 +15,33 @@ public class PriceResponseMapper {
 
     /**
      * Metodo para el mapeo de la clase PRICE
-     * @param List<Price> prices
+     * @param List<PriceResponseDTO> prices
      * @return List<PriceResponseDTO>
      */
     public static List<PriceResponseDTO> mapPriceResponseDTO(List<Price> prices) {
         List<PriceResponseDTO> list = new ArrayList<>();
         prices.stream().forEach(price -> {
-            PriceResponseDTO priceResponseDTO = new PriceResponseDTO();
-            String precioFinal = price.getPrice() + price.getCurr();
-            priceResponseDTO.setPrecioFinal(precioFinal);
-            priceResponseDTO.setPriceList(price.getPriceList().toString());
-            priceResponseDTO.setBrandId(price.getBrand().getId().toString() + price.getBrand().getNameBrand());
-            priceResponseDTO.setProductId(price.getProductId().toString());
-            priceResponseDTO.setStartDate(price.getStartDate().toString());
-            priceResponseDTO.setEndDate(price.getEndDate().toString());
+            PriceResponseDTO priceResponseDTO = mapPriceResponseDTO(price);
             list.add(priceResponseDTO);
         });
 
         return list;
+    }
+
+    /**
+     * Metodo para el mapeo de la clase Price individualmente
+     * @param price
+     * @return
+     */
+    public static PriceResponseDTO mapPriceResponseDTO(Price price) {
+        PriceResponseDTO priceResponseDTO = new PriceResponseDTO();
+        String precioFinal = price.getPrice() + " " + price.getCurr();
+        priceResponseDTO.setPrecioFinal(precioFinal);
+        priceResponseDTO.setPriceList(price.getPriceList().toString());
+        priceResponseDTO.setBrandId(price.getBrand().getId().toString() + "-" + price.getBrand().getNameBrand());
+        priceResponseDTO.setProductId(price.getProductId().toString());
+        priceResponseDTO.setStartDate(price.getStartDate().toString());
+        priceResponseDTO.setEndDate(price.getEndDate().toString());
+        return priceResponseDTO;
     }
 }

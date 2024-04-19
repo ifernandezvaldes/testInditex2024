@@ -1,118 +1,109 @@
 package com.example.testinditex;
 
+
 import com.example.testinditex.controller.PriceController;
 import com.example.testinditex.dto.PriceResponseDTO;
-import com.example.testinditex.repository.PricesRepository;
-import com.example.testinditex.service.PriceService;
-import com.example.testinditex.service.impl.PriceServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.util.ReflectionTestUtils;
+
 import java.time.Instant;
-import java.util.List;
-import java.util.Objects;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
-@TestPropertySource(locations = "classpath:application.properties")
+
+@SpringBootTest
 public class PriceTest {
-    @InjectMocks
-    private PriceController priceController;
 
-    @Mock
-    private PricesRepository    pricesRepository;
+    @Autowired
+    PriceController priceController;
 
-    @Mock
-    private PriceService priceService;
-
-    @BeforeEach
-    public void init() {
-        priceService = Mockito.mock(PriceServiceImpl.class);
-        pricesRepository = Mockito.mock(PricesRepository.class);
-        priceController = new PriceController();
-
-    ReflectionTestUtils.setField(priceController, "priceService", priceService);
-    ReflectionTestUtils.setField(priceService, "pricesRepository", pricesRepository);
-    }
 
     @Test
-    public void testGetPrice_Success1() {
+    public void test1() {
         // Datos de prueba
-        Instant date = Instant.parse("2020-06-14T10:00:00Z");
+        LocalDateTime date = LocalDateTime.parse("2020-06-14T10:00:00");
         Integer brandId = 1;
         Integer productId = 35455;
 
         // Prueba
-        ResponseEntity<List<PriceResponseDTO>> response = priceController.getPrice(date, brandId, productId);
+        ResponseEntity<PriceResponseDTO> response = priceController.getPrice(date, brandId, productId);
 
-        // Assertions
+        //Asserts
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        //Comprobamos que el precio es el correspondiente al perdiodo de tiempo
+        assertEquals(response.getBody().getPrecioFinal(), "35.50 EUR");
     }
 
     @Test
-    public void testGetPrice_Success2() {
+    public void test2() {
         // Datos de prueba
-        Instant date = Instant.parse("2020-06-14T16:00:00Z");
+        LocalDateTime date = LocalDateTime.parse("2020-06-14T16:00:00");
         Integer brandId = 1;
         Integer productId = 35455;
 
         // Prueba
-        ResponseEntity<List<PriceResponseDTO>> response = priceController.getPrice(date, brandId, productId);
+        ResponseEntity<PriceResponseDTO> response = priceController.getPrice(date, brandId, productId);
 
-        // Assertions
+        //Asserts
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        //Comprobamos que el precio es el correspondiente al perdiodo de tiempo + priority
+        assertEquals(response.getBody().getPrecioFinal(), "25.45 EUR");
     }
 
     @Test
-    public void testGetPrice_Success3() {
+    public void test3() {
         // Datos de prueba
-        Instant date = Instant.parse("2020-06-14T21:00:00Z");
+        LocalDateTime date = LocalDateTime.parse("2020-06-14T21:00:00");
         Integer brandId = 1;
         Integer productId = 35455;
 
         // Prueba
-        ResponseEntity<List<PriceResponseDTO>> response = priceController.getPrice(date, brandId, productId);
+        ResponseEntity<PriceResponseDTO> response = priceController.getPrice(date, brandId, productId);
 
-        // Assertions
+        //Asserts
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        //Comprobamos que el precio es el correspondiente al perdiodo de tiempo
+        assertEquals(response.getBody().getPrecioFinal(), "35.50 EUR");
     }
 
     @Test
-    public void testGetPrice_Success4() {
+    public void test4() {
         // Datos de prueba
-        Instant date = Instant.parse("2020-06-15T10:00:00Z");
+        LocalDateTime date = LocalDateTime.parse("2020-06-15T10:00:00");
         Integer brandId = 1;
         Integer productId = 35455;
 
         // Prueba
-        ResponseEntity<List<PriceResponseDTO>> response = priceController.getPrice(date, brandId, productId);
+        ResponseEntity<PriceResponseDTO> response = priceController.getPrice(date, brandId, productId);
 
-        // Assertions
+        //Asserts
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        //Comprobamos que el precio es el correspondiente al perdiodo de tiempo
+        assertEquals(response.getBody().getPrecioFinal(), "30.50 EUR");
     }
 
     @Test
-    public void testGetPrice_Success5() {
+    public void test5() {
         // Datos de prueba
-        Instant date = Instant.parse("2020-06-16T21:00:00Z");
+        LocalDateTime date = LocalDateTime.parse("2020-06-16T21:00:00");
         Integer brandId = 1;
         Integer productId = 35455;
 
         // Prueba
-        ResponseEntity<List<PriceResponseDTO>> response = priceController.getPrice(date, brandId, productId);
+        ResponseEntity<PriceResponseDTO> response = priceController.getPrice(date, brandId, productId);
 
-        // Assertions
+        //Asserts
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        //Comprobamos que el precio es el correspondiente al perdiodo de tiempo
+        assertEquals(response.getBody().getPrecioFinal(), "38.95 EUR");
     }
+
+
 
 }

@@ -8,6 +8,8 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -22,16 +24,16 @@ public class Price {
     @Column(name = "PRICE_ID", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "BRAND_ID", nullable = false)
     private Cadenagrupo brand;
 
     @Column(name = "START_DATE", nullable = false)
-    private Instant startDate;
+    private LocalDateTime startDate;
 
     @Column(name = "END_DATE", nullable = false)
-    private Instant endDate;
+    private LocalDateTime endDate;
 
     @Column(name = "PRICE_LIST", nullable = false)
     private Integer priceList;
